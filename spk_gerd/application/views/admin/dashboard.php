@@ -31,10 +31,10 @@
             <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-chart-two">
                     <div class="widget-heading">
-                        <h5 class="">Sales by Category</h5>
+                        <h5 class="">Total Penyakit</h5>
                     </div>
                     <div class="widget-content">
-                        <div id="chart-2" class=""></div>
+                        <div id="penyakit" class=""></div>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,6 @@
 </div>
 <script>
     <?php 
-
     $bulan = date('m');
     if($bulan <=9){
         $isine = substr($bulan,1,2);
@@ -143,7 +142,10 @@ subtitle: {
   }
 },
 title: {
-    text: '$10,840',
+    <?php 
+    $jml = $this->db->query("SELECT COUNT(kd_konsultasi) as jml FROM tkonsultasi_h")->row();
+    ?>
+    text: '<?=$jml->jml?> Pasien',
     align: 'left',
     margin: 0,
     offsetX: -10,
@@ -160,14 +162,34 @@ stroke: {
   width: 2,
   lineCap: 'square'
 },
-series: [{
-  name: 'Income',
-  data: [16800, 16800, 15500, 17800, 15500, 17000, 19000, 16000, 15000, 17000, 14000, 17000]
-}, {
-  name: 'Expenses',
-  data: [16500, 17500, 16200, 17300, 16000, 19500, 16000, 17000, 16000, 19000, 18000, 19000]
-}],
-labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+series: [
+{
+    name:`Jumlah Pasien`,
+
+    data:[
+    <?php 
+    for($a=1;$a<=$isine;$a++):
+        if($a<9){
+            $wulan = '0'.$a;
+        }else{
+            $wulan = $a;
+        }
+        $jml = $this->db->query("SELECT COUNT(kd_konsultasi) as jml FROM tkonsultasi_h WHERE MONTH(tgl_input)='".$wulan."'")->row();
+        echo $jml->jml.",";
+    endfor;
+    ?>
+
+    ]
+},
+],
+labels: [
+<?php 
+for($a=1;$a<=$isine;$a++){
+    echo "'".bulane($a)."',";
+}
+
+?>
+],
 xaxis: {
     axisBorder: {
       show: false
@@ -191,9 +213,9 @@ xaxis: {
 yaxis: {
     labels: {
       formatter: function(value, index) {
-        return (value / 1000) + 'K'
+        return value
     },
-    offsetX: -22,
+    offsetX: -15,
     offsetY: 0,
     style: {
       fontSize: '12px',
@@ -279,4 +301,150 @@ var chart1 = new ApexCharts(
     );
 
 chart1.render();
+
+
+//penyakit
+var options = {
+  chart: {
+      type: 'donut',
+      width: 370,
+      height: 430
+  },
+  colors: [
+  <?php 
+  foreach ($this->db->from('tpenyakit')->get()->result() as $ok) {
+    echo "'#".random_color()."',";
+}
+
+?>
+
+],
+dataLabels: {
+    enabled: false
+},
+legend: {
+  position: 'bottom',
+  horizontalAlign: 'center',
+  fontSize: '14px',
+  markers: {
+    width: 10,
+    height: 10,
+    offsetX: -5,
+    offsetY: 0
+},
+itemMargin: {
+    horizontal: 10,
+    vertical: 30
+}
+},
+plotOptions: {
+    pie: {
+      donut: {
+        size: '75%',
+        background: 'transparent',
+        labels: {
+          show: true,
+          name: {
+            show: true,
+            fontSize: '29px',
+            fontFamily: 'Nunito, sans-serif',
+            color: undefined,
+            offsetY: -10
+        },
+        value: {
+            show: true,
+            fontSize: '26px',
+            fontFamily: 'Nunito, sans-serif',
+            color: '#bfc9d4',
+            offsetY: 16,
+            formatter: function (val) {
+              return val
+          }
+      },
+      total: {
+        show: true,
+        showAlways: true,
+        label: 'Total',
+        color: '#888ea8',
+        formatter: function (w) {
+          return w.globals.seriesTotals.reduce( function(a, b) {
+            return a + b
+        }, 0)
+      }
+  }
+}
+}
+}
+},
+stroke: {
+    show: true,
+    width: 15,
+    colors: '#0e1726'
+},
+series: [
+<?php 
+$pasien = $this->db->query("SELECT * FROM tkonsultasi_h ORDER BY tgl_input DESC")->result();
+$tampung =[];
+foreach($pasien as $p):
+    $pen=[];
+    $cek_dulu = $this->db->query("SELECT *,skor_perhitungan as skor FROM tkeputusan,tpenyakit WHERE tkeputusan.kode_penyakit = tpenyakit.kode_penyakit AND tkeputusan.kd_konsultasi='".$p->kd_konsultasi."'")->result();
+    foreach($cek_dulu as $cd):
+        array_push($pen,$cd);
+    endforeach;
+    $keys = array_column($pen, 'skor');
+    array_multisort($keys, SORT_DESC, $pen);
+    $p->penyakit = $pen[0]->nama_penyakit."(".$pen[0]->skor_perhitungan." %)";
+    $p->kd_penyakit = $pen[0]->kode_penyakit;
+    array_push($tampung,$p);
+endforeach;
+foreach($this->db->from('tpenyakit')->get()->result() as $pn):
+    if(array_search($pn->kode_penyakit, array_column($tampung, 'kd_penyakit')) !== false){
+        echo array_count_values(array_column($tampung,'kd_penyakit'))[$pn->kode_penyakit].",";        
+
+    }
+   // echo $pn->kode_penyakit."(".array_search($pn->kode_penyakit, array_column($tampung, 'kd_penyakit')).") ";
+endforeach;
+
+?>
+],
+labels: [
+<?php 
+$penyakit = $this->db->from("tpenyakit")->get()->result();
+foreach($penyakit as $p):
+
+    echo  "'".$p->nama_penyakit."',";
+endforeach; ?>
+],
+
+responsive: [
+{ 
+  breakpoint: 1440, options: {
+    chart: {
+      width: 325
+  },
+}
+},
+{ 
+  breakpoint: 1199, options: {
+    chart: {
+      width: 380
+  },
+}
+},
+{ 
+  breakpoint: 575, options: {
+    chart: {
+      width: 320
+  },
+}
+},
+],
+}
+
+var chart = new ApexCharts(
+  document.querySelector("#penyakit"),
+  options
+  );
+
+chart.render();
 </script>

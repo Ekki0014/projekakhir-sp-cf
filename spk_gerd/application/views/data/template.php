@@ -63,7 +63,7 @@
     <link rel="stylesheet" type="text/css" href="<?=base_url('assets_')?>/src/plugins/css/dark/vanillaSelectBox/custom-vanillaSelectBox.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets_/src/assets/css/light/elements/alert.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets_/src/assets/css/dark/elements/alert.css">
-     <link href="<?= base_url(); ?>assets_/src/plugins/src/apex/apexcharts.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url(); ?>assets_/src/plugins/src/apex/apexcharts.css" rel="stylesheet" type="text/css">
     <link href="<?= base_url(); ?>assets_/src/assets/css/light/components/list-group.css" rel="stylesheet" type="text/css">
     <link href="<?= base_url(); ?>assets_/src/assets/css/light/dashboard/dash_2.css" rel="stylesheet" type="text/css" />
 
@@ -275,28 +275,28 @@
                                     &#x1F44B;
                                 </div>
                                 <div class="media-body">
-                                    <h5>Shaun Park</h5>
-                                    <p>Project Leader</p>
+                                    <h5><?=$this->session->userdata('nama_lengkap')?></h5>
+                                    <p><?=$this->session->userdata('akses') == 'adm' ? 'Admin' : 'Pasien'?></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="dropdown-item">
+                        <!-- <div class="dropdown-item">
                             <a href="user-profile.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> <span>Profile</span>
                             </a>
-                        </div>
-                        <div class="dropdown-item">
+                        </div> -->
+                       <!--  <div class="dropdown-item">
                             <a href="app-mailbox.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg> <span>Inbox</span>
                             </a>
-                        </div>
-                        <div class="dropdown-item">
+                        </div> -->
+                        <!-- <div class="dropdown-item">
                             <a href="auth-boxed-lockscreen.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> <span>Lock Screen</span>
                             </a>
-                        </div>
+                        </div> -->
                         <div class="dropdown-item">
-                            <a href="auth-boxed-signin.html">
+                            <a href="<?=base_url('Welcome/logout')?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> <span>Log Out</span>
                             </a>
                         </div>
@@ -327,7 +327,7 @@
                             </a>
                         </div>
                         <div class="nav-item theme-text">
-                            <a href="./index.html" class="nav-link">SP-Gerd</a>
+                            <a href="<?=base_url()?>" class="nav-link"><h5 style="color:black">SP-Lambung</h5></a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">
@@ -339,9 +339,13 @@
                 <div class="shadow-bottom"></div>
                 <?php 
                 $link = $this->uri->segment(2)."/".$this->uri->segment(3);
+                $link2 = $this->uri->segment(1)."/".$this->uri->segment(2);
                 ?>
                 <ul class="list-unstyled menu-categories" id="accordionExample">
-                    <li class="menu">
+                    <?php 
+                    if($this->session->userdata('akses') == 'adm'):
+                     ?>
+                     <li class="menu  <?=$link2 == 'admin/Dashboard' ? 'active' : ''?>">
                         <a href="<?=base_url('admin/Dashboard')?>" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -349,6 +353,7 @@
                             </div>
                         </a>
                     </li>
+
                   <!--   <li class="menu active">
                         <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <div class="">
@@ -611,6 +616,79 @@
 </div>
 </a>
 </li>       
+<?php endif ?>
+<?php if($this->session->userdata('akses') == 'psn'): 
+    $link4 = $this->uri->segment(1)."/".$this->uri->segment(2)."/".$this->uri->segment(3);
+    ?>
+    <li class="menu <?=$link4 == 'pasien/Konsultasi/Konsultasi' ? 'active' : ''?>">
+        <a href="<?=base_url('pasien/Konsultasi/Konsultasi')?>" aria-expanded="false" class="dropdown-toggle">
+            <div class="">
+               <svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#04009a;}.cls-2{fill:#77acf1;}</style></defs><g data-name="13. Computer" id="_13._Computer"><path class="cls-1" d="M28,3H26a1,1,0,0,0,0,2h2a1,1,0,0,1,1,1V20H3V6A1,1,0,0,1,4,5H6A1,1,0,0,0,6,3H4A3,3,0,0,0,1,6V24a3,3,0,0,0,3,3h7.88A4.53,4.53,0,0,1,10,29.83L9.7,30H8a1,1,0,0,0,0,2H24a1,1,0,0,0,0-2H22.3l-.25-.17A4.53,4.53,0,0,1,20.12,27H28a3,3,0,0,0,3-3V6A3,3,0,0,0,28,3ZM19.36,30H12.64a6.55,6.55,0,0,0,1.28-3h4.16A6.55,6.55,0,0,0,19.36,30ZM28,25H4a1,1,0,0,1-1-1V22H29v2A1,1,0,0,1,28,25Z"/><path class="cls-1" d="M16,16a8,8,0,1,1,8-8A8,8,0,0,1,16,16ZM16,2a6,6,0,1,0,6,6A6,6,0,0,0,16,2Z"/><path class="cls-2" d="M18,7H17V6a1,1,0,0,0-2,0V7H14a1,1,0,0,0,0,2h1v1a1,1,0,0,0,2,0V9h1a1,1,0,0,0,0-2Z"/></g></svg>
+               <span>Konsultasi</span>
+           </div>
+       </a>
+   </li>  
+   <li class="menu <?=$link4 == 'pasien/Konsultasi/Data_konsul' ? 'active' : ''?>">
+    <a href="<?=base_url('pasien/Konsultasi/Data_konsul')?>" aria-expanded="false" class="dropdown-toggle">
+        <div class="">
+         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+         <polygon style="fill:#A0F6FA;" points="455.736,0 455.736,444.484 399.473,466.989 421.978,0 "/>
+         <polygon style="fill:#D0FBFD;" points="56.264,0 56.264,512 388.22,512 421.978,455.736 421.978,0 "/>
+         <polygon style="fill:#FF9269;" points="388.22,67.516 388.22,174.418 354.462,174.418 320.703,120.967 354.462,67.516 "/>
+         <rect x="123.78" y="67.516" style="fill:#FFB082;" width="230.681" height="106.901"/>
+         <polygon style="fill:#50D1DD;" points="455.736,444.484 388.22,512 388.22,444.484 421.978,444.484 "/>
+         <g>
+            <path style="fill:#25BBCC;" d="M303.824,385.407H132.22c-4.662,0-8.44-3.779-8.44-8.44s3.778-8.44,8.44-8.44h171.604
+            c4.662,0,8.44,3.779,8.44,8.44S308.486,385.407,303.824,385.407z"/>
+            <path style="fill:#25BBCC;" d="M379.78,351.648H132.22c-4.662,0-8.44-3.779-8.44-8.44s3.778-8.44,8.44-8.44h247.56
+            c4.662,0,8.44,3.779,8.44,8.44S384.442,351.648,379.78,351.648z"/>
+            <path style="fill:#25BBCC;" d="M379.78,317.89H132.22c-4.662,0-8.44-3.779-8.44-8.44s3.778-8.44,8.44-8.44h247.56
+            c4.662,0,8.44,3.779,8.44,8.44S384.442,317.89,379.78,317.89z"/>
+            <path style="fill:#25BBCC;" d="M379.78,284.132H132.22c-4.662,0-8.44-3.779-8.44-8.44s3.778-8.44,8.44-8.44h247.56
+            c4.662,0,8.44,3.779,8.44,8.44S384.442,284.132,379.78,284.132z"/>
+            <path style="fill:#25BBCC;" d="M379.78,250.374H132.22c-4.662,0-8.44-3.779-8.44-8.44s3.778-8.44,8.44-8.44h247.56
+            c4.662,0,8.44,3.779,8.44,8.44S384.442,250.374,379.78,250.374z"/>
+            <path style="fill:#25BBCC;" d="M213.802,452.923H132.22c-4.662,0-8.44-3.779-8.44-8.44c0-4.661,3.778-8.44,8.44-8.44h81.582
+            c4.662,0,8.44,3.779,8.44,8.44C222.242,449.144,218.464,452.923,213.802,452.923z"/>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+        <g>
+        </g>
+    </svg>
+
+    <span>Konsultasi Saya</span>
+</div>
+</a>
+</li>  
+<?php endif; ?>
 
 </ul>
 
@@ -644,8 +722,8 @@
 <!-- <script src="<?=base_url('assets_')?>/src/plugins/src/apex/apexcharts.min.js"></script> -->
 <script src="<?=base_url('assets_')?>/src/assets/js/dashboard/dash_1.js"></script>
 <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
- 
-    <script src="<?=base_url('assets_')?>/src/assets/js/dashboard/dash_2.js"></script>
+
+<script src="<?=base_url('assets_')?>/src/assets/js/dashboard/dash_2.js"></script>
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?=base_url('assets_')?>/src/plugins/src/table/datatable/datatables.js"></script>
 <!-- <script src="<?=base_url('assets_')?>/src/assets/js/scrollspyNav.js"></script> -->

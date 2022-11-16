@@ -115,9 +115,9 @@ function nomorSurat($tahun)
 {
 	$ci 			= &get_instance();
 	$total 			= $ci->db->select('".$field."')
-		->from('surat')
-		->like('no_surat', $tahun, 'both')
-		->get()->num_rows();
+	->from('surat')
+	->like('no_surat', $tahun, 'both')
+	->get()->num_rows();
 	$totall			= ++$total;
 	return '045.2 / ' . $totall . ' / ' . bulanRomawi() . ' / ' . $tahun;
 }
@@ -127,22 +127,29 @@ function format_indo($tgl)
 	return $pecahka[2] . ' ' . $pecahka[1] . ' ' . $pecahka[0];
 }
 
-  function bulane($bulan){
-   	$data_bulan = array(
-            '1' => 'Jan',
-            '2' => 'Feb',
-            '3' => 'Mar',
-            '4' => 'Apr',
-            '5' => 'Mei',
-            '6' => 'Jun',
-            '7' => 'Jul',
-            '8' => 'Agu',
-            '9' => 'Sep',
-            '10' => 'Okt',
-            '11' => 'Nov',
-            '12' => 'Des',
-    );
-    return $data_bulan[$bulan];
-   }
+function bulane($bulan){
+	$data_bulan = array(
+		'1' => 'Jan',
+		'2' => 'Feb',
+		'3' => 'Mar',
+		'4' => 'Apr',
+		'5' => 'Mei',
+		'6' => 'Jun',
+		'7' => 'Jul',
+		'8' => 'Agu',
+		'9' => 'Sep',
+		'10' => 'Okt',
+		'11' => 'Nov',
+		'12' => 'Des',
+	);
+	return $data_bulan[$bulan];
+}
 
+function random_color_part(){
+	return str_pad(dechex(mt_rand(0,255)), 2, '0',STR_PAD_LEFT);
+}
+
+function random_color(){
+	return random_color_part().random_color_part().random_color_part();
+}
 

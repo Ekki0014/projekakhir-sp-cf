@@ -36,9 +36,9 @@ class Welcome extends CI_Controller
 					$sdata['kdpengguna']   = $result->kdpengguna;
 					$this->session->set_userdata($sdata);
 					if ($sdata['akses'] == 'adm') {
-						redirect('admin/Master/gejala');
-					} else if ($sdata['akses'] == 'pelanggan') {
-						redirect('admin/Diagnosa/konsultasi');
+						redirect('admin/Dashboard');
+					} else if ($sdata['akses'] == 'psn') {
+						redirect('pasien/Konsultasi/Konsultasi');
 					}
 				} else {
 					$session['gagal'] = "Username atau Password Salah";
@@ -58,33 +58,31 @@ class Welcome extends CI_Controller
 		redirect('Welcome');
 	}
 
-	public function register()
-	{
-		$this->load->view('register');
-	}
-
 	public function saveRegister()
 	{
-		$send = [
-			'namaLengkap'	=> $this->input->post('namaLengkap'),
-			'alamat'		=> $this->input->post('alamat'),
-			'username'		=> $this->input->post('nik'),
-			'password'		=> md5($this->input->post('password')),
-			'hakAkses'		=> "pelanggan",
-			'nik'			=> $this->input->post('nik'),
-			'status'		=> 'a',
-			'tgl_masuk'		=> date('Y-m-d')
+		$kirim = [
+			'nama_lengkap' => $this->input->post('nama_lengkap'),
+			'alamat'	   => $this->input->post('alamat'),
+			'tgl_lahir'		=> $this->input->post('tgl_lahir'),
+			'no_hp'			=> $this->input->post('no_hp'),
+			'akses'			=> $this->input->post('akses'),
+			'username'	    => $this->input->post('username')	
 		];
-		$config['upload_path']		='assets/images';
-		$config['allowed_types']	= '*';
-		$config['encrypt_name']		= TRUE;
-		$this->load->library('upload',$config);
-		if($this->upload->do_upload('foto')){
-			$uploadData		= $this->upload->data();
-			$uploadFile		= $uploadData['file_name'];
+		$cek = $this->db->from('tpengguna')->order_by('kdpengguna','DESC')->limit(1)->get();
+		if($cek->num_rows() > 0){
+			$ok = $cek->row();
+			$kode = substr($ok->kdpengguna,6,9);
+			$kodene = sprintf("PG-%04s",++$kode);
+		}else{
+			$kodene="PG-0001";	
 		}
-		$send['foto']		= $uploadFile;
-		$this->mv->save_data('tbuser', $send);
-		redirect('Welcome');	
+		$kirim['password'] = md5($this->input->post('password'));
+		$kirim['kdpengguna'] = $kodene;
+		if($this->mv->save_data('tpengguna', $kirim)){
+			echo json_encode(['status' => TRUE,'pesan' => 'DATA BERHASIL DISIMPAN']);
+		}else{
+			echo json_encode(['status' => FALSE,'pesan' => 'DATA GAGAL DISIMPAN']);
+		}	
+		
 	}
 }
