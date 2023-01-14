@@ -49,10 +49,34 @@
                     <label for="penyakit" class="form-label">Tanggal Akhir</label>
                     <input type="date" name="tgl_akhir" id="tgl_akhir" class="form-control" placeholder="Tanggal Akhir">
                   </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 p-2">
+                    <label for="username" class="form-label">Jenis Kelamin</label>
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="lk" value="laki-laki" name="jk" class="custom-control-input jk">
+                      <label class="custom-control-label" for="lk">Laki - Laki</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="pr" name="jk" value="perempuan" class="custom-control-input jk">
+                      <label class="custom-control-label" for="pr">Perempuan</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 p-2">
+                    <select id="usia" name="usia" class="form-control">
+                      <option value="">Usia</option>
+                      <?php foreach($usia as $u): ?>
+                        <option value="<?=$u->usia?>"><?=$u->usia?></option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-md-6 p-2">
                     <button type="submit" name="submit" id="submit" class="btn btn-secondary w-100">Submit</button>
                   </div>
                 </div>
+
               </form>
             </div>
           </div>
@@ -70,11 +94,16 @@
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Nama Pasien</th>
+                    <th>Tanggal Konsul</th>
+                    <th>NIK</th>
+                    <th>Nama Lengkap</th>
+                    <th>Usia</th>
+                    <th>Jenis Kelamin</th>
                     <th>Tanggal Lahir</th>
                     <th>Alamat</th>
                     <th>No Hp</th>
                     <th>Hasil Penyakit</th>
+                    <th>Solusi Penyakit</th>
                     <th>Cetak Hasil</th>
                   </tr>
                 </thead>
@@ -94,21 +123,32 @@
 </div>
 
 <script>
- $("#form_laporan").submit(function(e){
-   e.preventDefault();
-   $("#data_pasien").empty();
-   $("#tombole").empty();
-   $.ajax({
-    url:"<?=base_url('admin/Laporan/tampilkan_pasien/')?>",
-    type:"POST",
-    data:$("#form_laporan").serialize(),
-    dataType:"JSON",
-    success:function(data){
-      console.log(data.data)
-      table = $("#zero-config").DataTable();
-      if(data.data != ''){
-        var b=1;
-        for(var a=0;a<data.data.length;a++){
+
+ function convertDateDBtoIndo(string) {
+  bulanIndo = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September' , 'Oktober', 'November', 'Desember'];
+
+  tanggal = string.split("-")[2];
+  bulan = string.split("-")[1];
+  tahun = string.split("-")[0];
+
+  return tanggal + " " + bulanIndo[Math.abs(bulan)] + " " + tahun;
+}
+$("#form_laporan").submit(function(e){
+ e.preventDefault();
+ $('#zero-config').DataTable().clear();
+ //$("#data_pasien").empty();
+ $("#tombole").empty();
+ $.ajax({
+  url:"<?=base_url('admin/Laporan/tampilkan_pasien/')?>",
+  type:"POST",
+  data:$("#form_laporan").serialize(),
+  dataType:"JSON",
+  success:function(data){
+    console.log(data.data)
+    table = $("#zero-config").DataTable();
+    if(data.data != ''){
+      var b=1;
+      for(var a=0;a<data.data.length;a++){
           // $("#data_pasien").append(` <tr>
           //   <td>${b++}</td>
           //   <td>${data.data[a].nama_pasien}</td>
@@ -118,7 +158,7 @@
           //   <td>${data.data[a].penyakit}</td>
           //   <td>${data.data[a].penyakit}</td>
           //   </tr>`);
-          table.row.add([b++,data.data[a].nama_pasien,data.data[a].tgl_lahir,data.data[a].alamat,data.data[a].no_hp,data.data[a].penyakit,`<a href="<?=base_url('admin/Diagnosa/cetak_konsul/')?>${data.data[a].kd_konsultasi}" class="btn btn-info mb-2 mr-2" target="_blank">
+          table.row.add([b++,convertDateDBtoIndo(data.data[a].tgl_input),data.data[a].nik,data.data[a].nama_pasien,data.data[a].usia,data.data[a].jenis_kelamin,convertDateDBtoIndo(data.data[a].tgl_lahir),data.data[a].alamat,data.data[a].no_hp,data.data[a].penyakit,data.data[a].solusi,`<a href="<?=base_url('admin/Diagnosa/cetak_konsul/')?>${data.data[a].kd_konsultasi}" class="btn btn-info mb-2 mr-2" target="_blank">
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58 58" style="enable-background:new 0 0 58 58;" xml:space="preserve">
             <polygon style="fill:#C7CAC7;" points="49,35 49,52 52,52 52,49 58,49 58,17 0,17 0,49 6,49 6,52 9,52 9,35 " />
             <polygon style="fill:#556080;" points="58,35 58,17 0,17 0,35 9,35 49,35 " />
@@ -182,13 +222,29 @@
 
     }
   })
- })
+})
 
 
- function cetak_semua(){
-  var tgl_awal  = $("#tgl_awal").val();
-  var tgl_akhir = $("#tgl_akhir").val();
-  window.open(`<?=base_url('admin/Laporan/cetak_semua/')?>${tgl_awal}/${tgl_akhir}`);
- }
+  function cetak_semua(){
+    var tgl_awal  ="kosong";
+    if($("#tgl_awal").val()){
+      tgl_awal = $("#tgl_awal").val();
+    }
+
+  //alert(tgl_awal);
+  var tgl_akhir = "kosong";
+  if($("#tgl_akhir").val()){
+    tgl_akhir = $("#tgl_akhir").val();
+  }
+  var jk  = "kosong";
+  if($('input[name="jk"]:checked').val()){
+    jk=$('input[name="jk"]:checked').val();
+  }
+  var usia = "kosong";
+  if($("#usia").val()){
+    usia=$("#usia").val();
+  }
+  window.open(`<?=base_url('admin/Laporan/cetak_semua/')?>${tgl_awal}/${tgl_akhir}/${jk}/${usia}`);
+}
 
 </script>

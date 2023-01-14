@@ -41,23 +41,40 @@
             </div>
             <div class="row">
               <div class="col-md-6 p-2">
+                  <span><label for="nik_pasien" class="form-label">NIK</label></span>
+                <input type="number" name="nik_pasien" id="nik_pasien" class="form-control" placeholder="NIK" required="" value="<?=$this->session->userdata('nik')?>">
+              </div>
+              <div class="col-md-6 p-2">
                 <span><label for="penyakit" class="form-label">Nama Pasien</label></span>
-                <input type="text" name="nama_pasien" value="<?=$this->session->userdata('nama_lengkap')?>" id="nama_pasien" class="form-control" placeholder="Nama Pasien" readonly>
+                <input type="text" name="nama_pasien" value="<?=$this->session->userdata('nama_lengkap')?>" id="nama_pasien" class="form-control" placeholder="Nama Pasien" >
+              </div>
+            </div>
+            <div class="row">
+               <div class="col-md-6 p-2">
+                <label for="username" class="form-label">Jenis Kelamin</label>
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="lk" value="laki-laki" name="jk" class="custom-control-input jk" <?=$this->session->userdata('jenis_kelamin') == "laki-laki" ? 'checked' : ''?>>
+                  <label class="custom-control-label" for="lk">Laki - Laki</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="pr" name="jk" value="perempuan" class="custom-control-input jk" <?=$this->session->userdata('jenis_kelamin') == "perempuan" ? 'checked' : ''?>>
+                  <label class="custom-control-label" for="pr">Perempuan</label>
+                </div>
               </div>
               <div class="col-md-6 p-2">
                 <label for="penyakit" class="form-label">Tanggal Lahir</label>
-                <input type="date" name="tgl_lahir" value="<?=$this->session->userdata('tgl_lahir')?>" id="tgl_lahir" class="form-control" placeholder="Tanggal Lahir" readonly>
+                <input type="date" name="tgl_lahir" value="<?=$this->session->userdata('tgl_lahir')?>" id="tgl_lahir" class="form-control" placeholder="Tanggal Lahir" >
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 p-2">
                 <span><label for="penyakit" class="form-label">Alamat</label></span>
-                <textarea name="alamat" id="alamat"  class="form-control" readonly><?=$this->session->userdata('alamat')?></textarea>
+                <textarea name="alamat" id="alamat"  class="form-control" ><?=$this->session->userdata('alamat')?></textarea>
               </div>
               <div class="col-md-6 p-2">
                 <label for="penyakit" class="form-label">No Hp</label>
-                <input type="text" name="no_hp" id="no_hp"  value="<?=$this->session->userdata('no_hp')?>" class="form-control" placeholder="No Hp" readonly>
+                <input type="text" name="no_hp" id="no_hp"  value="<?=$this->session->userdata('no_hp')?>" class="form-control" placeholder="No Hp" >
               </div>
             </div>
           </div>
@@ -148,6 +165,8 @@
     var alamat = $("#alamat").val();
     var no_hp = $("#no_hp").val();
     var tgl_lahir = $("#tgl_lahir").val();
+    var nik     = $("#nik_pasien").val();
+     var jk  = $('input[name="jk"]:checked').val();
     if(nama || alamat || no_hp || tgl_lahir){
       $("#hasil").empty()
       $("#hasil_komplit").empty()
@@ -155,13 +174,13 @@
       $.ajax({
         type:"POST",
         url: "<?=base_url('pasien/Konsultasi/checking')?>",
-        data: {pilihan:pilihan,nama:nama,alamat:alamat,no_hp:no_hp,tgl_lahir:tgl_lahir},
+        data: {pilihan:pilihan,nama:nama,alamat:alamat,no_hp:no_hp,tgl_lahir:tgl_lahir,nik:nik,jk:jk},
         success:function(msg){
          var isi = JSON.parse(msg);
          console.log(isi.datah.tertinggi);
          $("#hasil").append(`<div class="alert alert-arrow-left alert-icon-left alert-light-primary alert-dismissible fade show mb-4" role="alert">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-          <strong>Informasi!</strong> Berdasarkan Perhitungan dapat disimpulkan bahwa diagnosa dari inputan pengguna adalah <b>${isi.datah.tertinggi.nama_penyakit} Dengan Skor ${isi.datah.tertinggi.skor} %</b>.
+          <strong>Informasi!</strong> Berdasarkan Perhitungan dapat disimpulkan bahwa diagnosa dari inputan pengguna adalah <b>${isi.datah.tertinggi.nama_penyakit} Dengan Skor ${isi.datah.tertinggi.skor} %</b>Dan Solusi dari kesimpulan tersebut adalah <b>${isi.datah.tertinggi.solusi}</b>.
           </div>`);
          for(var a=0;a<isi.datah.semua.length;a++){
           $("#hasil_komplit").append(` <tr>

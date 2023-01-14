@@ -29,11 +29,14 @@
                   <tr>
                     <th>No</th>
                     <th>Tanggal Konsul</th>
+                    <th>NIK</th>
                     <th>Nama Lengkap</th>
+                    <th>Jenis Kelamin</th>
                     <th>Tanggal Lahir</th>
                     <th>Alamat</th>
                     <th>No Hp</th>
                     <th>Hasil Penyakit</th>
+                    <th>Solusi Penyakit</th>
                     <th>Cetak Hasil</th>
                   </tr>
                 </thead>
@@ -44,12 +47,15 @@
                    ?>
                    <tr>
                     <td><?=$no++?></td>
-                    <td><?=$t->tgl_input?></td>
+                    <td><?=tgl_indo($t->tgl_input)?></td>
+                    <td><?=$t->nik?></td>
                     <td><?=$t->nama_pasien?></td>
-                    <td><?=$t->tgl_lahir?></td>
+                    <td><?=$t->jenis_kelamin?></td>
+                    <td><?=tgl_indo($t->tgl_lahir)?></td>
                     <td><?=$t->alamat?></td>
                     <td><?=$t->no_hp?></td>
                     <td><?=$t->penyakit?></td>
+                    <td><?=$t->solusi?></td>
                     <td><a href="<?=base_url('admin/Diagnosa/cetak_konsul/')?><?=$t->kd_konsultasi?>" class="btn btn-info mb-2 mr-2" target="_blank">
                       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58 58" style="enable-background:new 0 0 58 58;" xml:space="preserve">
                         <polygon style="fill:#C7CAC7;" points="49,35 49,52 52,52 52,49 58,49 58,17 0,17 0,49 6,49 6,52 9,52 9,35 " />

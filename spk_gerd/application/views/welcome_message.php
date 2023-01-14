@@ -173,6 +173,10 @@
 						<input type="hidden" name="kdpengguna" id="kdpengguna">
 						<div class="row">
 							<div class="col-md-6 p-2">
+								<label for="nik" class="form-label">NIK</label>
+								<input type="number" id="nik" name="nik" class="form-control" placeholder="NIK" aria-label="NIK" required="">
+							</div>
+							<div class="col-md-6 p-2">
 								<label for="nama_lengkap" class="form-label">Nama Lengkap</label>
 								<input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control" placeholder="Nama Lengkap" aria-label="Nama Lengkap" required="">
 							</div>
@@ -186,7 +190,7 @@
 							</div>
 							<div class="col-md-6 p-2">
 								<label for="no_hp" class="form-label">No Hp</label>
-								<input type="text" id="no_hp" name="no_hp" class="form-control" placeholder="No Hp" aria-label="No Hp" required="">
+								<input type="number" id="no_hp" name="no_hp" class="form-control" placeholder="No Hp" aria-label="No Hp" required="">
 							</div>
 							<input type="hidden" name="akses" id="akses" value="psn">
 							<div class="col-md-6 p-2">
@@ -196,6 +200,17 @@
 							<div class="col-md-6 p-2">
 								<label for="password" class="form-label">Password</label>
 								<input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" required="">
+							</div>
+							<div class="col-md-6 p-2">
+								<label for="username" class="form-label">Jenis Kelamin</label>
+								<div class="custom-control custom-radio">
+									<input type="radio" id="lk" value="laki-laki" name="jk" class="custom-control-input">
+									<label class="custom-control-label" for="lk">Laki - Laki</label>
+								</div>
+								<div class="custom-control custom-radio">
+									<input type="radio" id="pr" name="jk" value="perempuan" class="custom-control-input">
+									<label class="custom-control-label" for="pr">Perempuan</label>
+								</div>
 							</div>
 						</div>
 

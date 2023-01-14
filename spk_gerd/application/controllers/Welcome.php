@@ -28,6 +28,9 @@ class Welcome extends CI_Controller
 					$sdata['username'] = $result->username;
 					$sdata['nama_lengkap'] = $result->nama_lengkap;
 					$sdata['alamat'] = $result->alamat;
+					$sdata['nik']	= $result->nik;
+					$sdata['jenis_kelamin']	= $result->jenis_kelamin;
+					$sdata['status']		= $result->status;
 					$sdata['username'] = $result->username;
 					$sdata['password'] = $result->password;
 					$sdata['akses'] = $result->akses;
@@ -66,7 +69,10 @@ class Welcome extends CI_Controller
 			'tgl_lahir'		=> $this->input->post('tgl_lahir'),
 			'no_hp'			=> $this->input->post('no_hp'),
 			'akses'			=> $this->input->post('akses'),
-			'username'	    => $this->input->post('username')	
+			'username'	    => $this->input->post('username'),
+			'nik'		    => $this->input->post('nik'),
+			'jenis_kelamin'	=> $this->input->post('jk'),
+			'status'		=> 'tidak_aktif'	
 		];
 		$cek = $this->db->from('tpengguna')->order_by('kdpengguna','DESC')->limit(1)->get();
 		if($cek->num_rows() > 0){

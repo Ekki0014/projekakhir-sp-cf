@@ -41,92 +41,109 @@
             </div>
             <div class="row">
               <div class="col-md-6 p-2">
-                <span><label for="penyakit" class="form-label">Nama Pasien</label></span>
-                <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="Nama Pasien">
+                <span><label for="nik_pasien" class="form-label">NIK</label></span>
+                <input type="number" name="nik_pasien" id="nik_pasien" class="form-control" placeholder="NIK" required="">
               </div>
               <div class="col-md-6 p-2">
-                <label for="penyakit" class="form-label">Tanggal Lahir</label>
-                <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control" placeholder="Tanggal Lahir">
+                <span><label for="penyakit" class="form-label">Nama Pasien</label></span>
+                <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="Nama Pasien" required="">
               </div>
             </div>
-
             <div class="row">
               <div class="col-md-6 p-2">
-                <span><label for="penyakit" class="form-label">Alamat</label></span>
-                <textarea name="alamat" id="alamat"  class="form-control"></textarea>
+                <label for="username" class="form-label">Jenis Kelamin</label>
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="lk" value="laki-laki" name="jk" class="custom-control-input jk">
+                  <label class="custom-control-label" for="lk">Laki - Laki</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" id="pr" name="jk" value="perempuan" class="custom-control-input jk">
+                  <label class="custom-control-label" for="pr">Perempuan</label>
+                </div>
               </div>
-              <div class="col-md-6 p-2">
-                <label for="penyakit" class="form-label">No Hp</label>
-                <input type="text" name="no_hp" id="no_hp" class="form-control" placeholder="No Hp">
+                <div class="col-md-6 p-2">
+                  <label for="penyakit" class="form-label">Tanggal Lahir</label>
+                  <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control" placeholder="Tanggal Lahir" required="">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 p-2">
+                  <span><label for="penyakit" class="form-label">Alamat</label></span>
+                  <textarea name="alamat" id="alamat"  class="form-control"></textarea>
+                </div>
+                <div class="col-md-6 p-2">
+                  <label for="penyakit" class="form-label">No Hp</label>
+                  <input type="number" name="no_hp" id="no_hp" class="form-control" placeholder="No Hp">
+                </div>
               </div>
             </div>
           </div>
+          <br />
+          <div class="card">
+           <div class="card-header">
+            <svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#04009a;}.cls-2{fill:#77acf1;}</style></defs><g data-name="13. Computer" id="_13._Computer"><path class="cls-1" d="M28,3H26a1,1,0,0,0,0,2h2a1,1,0,0,1,1,1V20H3V6A1,1,0,0,1,4,5H6A1,1,0,0,0,6,3H4A3,3,0,0,0,1,6V24a3,3,0,0,0,3,3h7.88A4.53,4.53,0,0,1,10,29.83L9.7,30H8a1,1,0,0,0,0,2H24a1,1,0,0,0,0-2H22.3l-.25-.17A4.53,4.53,0,0,1,20.12,27H28a3,3,0,0,0,3-3V6A3,3,0,0,0,28,3ZM19.36,30H12.64a6.55,6.55,0,0,0,1.28-3h4.16A6.55,6.55,0,0,0,19.36,30ZM28,25H4a1,1,0,0,1-1-1V22H29v2A1,1,0,0,1,28,25Z"/><path class="cls-1" d="M16,16a8,8,0,1,1,8-8A8,8,0,0,1,16,16ZM16,2a6,6,0,1,0,6,6A6,6,0,0,0,16,2Z"/><path class="cls-2" d="M18,7H17V6a1,1,0,0,0-2,0V7H14a1,1,0,0,0,0,2h1v1a1,1,0,0,0,2,0V9h1a1,1,0,0,0,0-2Z"/></g></svg>Hasil Konsultasi
+          </div>
+          <div class="card-body">
+            <div id="hasil"></div>
+            <div id="tombol">
+
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Penyakit</th>
+                    <th>Bar Skor</th>
+                    <th>Presentase Skor</th>
+                  </tr>
+                </thead>
+                <tbody id="hasil_komplit">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <br />
+
+      </div>
+      <div class="col-xl-6 col-lg-6 col-sm-6  layout-spacing">
         <div class="card">
-         <div class="card-header">
-          <svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#04009a;}.cls-2{fill:#77acf1;}</style></defs><g data-name="13. Computer" id="_13._Computer"><path class="cls-1" d="M28,3H26a1,1,0,0,0,0,2h2a1,1,0,0,1,1,1V20H3V6A1,1,0,0,1,4,5H6A1,1,0,0,0,6,3H4A3,3,0,0,0,1,6V24a3,3,0,0,0,3,3h7.88A4.53,4.53,0,0,1,10,29.83L9.7,30H8a1,1,0,0,0,0,2H24a1,1,0,0,0,0-2H22.3l-.25-.17A4.53,4.53,0,0,1,20.12,27H28a3,3,0,0,0,3-3V6A3,3,0,0,0,28,3ZM19.36,30H12.64a6.55,6.55,0,0,0,1.28-3h4.16A6.55,6.55,0,0,0,19.36,30ZM28,25H4a1,1,0,0,1-1-1V22H29v2A1,1,0,0,1,28,25Z"/><path class="cls-1" d="M16,16a8,8,0,1,1,8-8A8,8,0,0,1,16,16ZM16,2a6,6,0,1,0,6,6A6,6,0,0,0,16,2Z"/><path class="cls-2" d="M18,7H17V6a1,1,0,0,0-2,0V7H14a1,1,0,0,0,0,2h1v1a1,1,0,0,0,2,0V9h1a1,1,0,0,0,0-2Z"/></g></svg>Hasil Konsultasi
-        </div>
-        <div class="card-body">
-          <div id="hasil"></div>
-          <div id="tombol">
+          <div class="card-header">
+           <svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#04009a;}.cls-2{fill:#77acf1;}</style></defs><g data-name="13. Computer" id="_13._Computer"><path class="cls-1" d="M28,3H26a1,1,0,0,0,0,2h2a1,1,0,0,1,1,1V20H3V6A1,1,0,0,1,4,5H6A1,1,0,0,0,6,3H4A3,3,0,0,0,1,6V24a3,3,0,0,0,3,3h7.88A4.53,4.53,0,0,1,10,29.83L9.7,30H8a1,1,0,0,0,0,2H24a1,1,0,0,0,0-2H22.3l-.25-.17A4.53,4.53,0,0,1,20.12,27H28a3,3,0,0,0,3-3V6A3,3,0,0,0,28,3ZM19.36,30H12.64a6.55,6.55,0,0,0,1.28-3h4.16A6.55,6.55,0,0,0,19.36,30ZM28,25H4a1,1,0,0,1-1-1V22H29v2A1,1,0,0,1,28,25Z"/><path class="cls-1" d="M16,16a8,8,0,1,1,8-8A8,8,0,0,1,16,16ZM16,2a6,6,0,1,0,6,6A6,6,0,0,0,16,2Z"/><path class="cls-2" d="M18,7H17V6a1,1,0,0,0-2,0V7H14a1,1,0,0,0,0,2h1v1a1,1,0,0,0,2,0V9h1a1,1,0,0,0,0-2Z"/></g></svg> Gejala
+         </div>
+         <div class="card-body">
+          <div class="row">
+            <?php 
+            foreach($gejala as $g):
+             ?>
+             <div class="col-md-4">
+               <div class="form-check form-check-primary form-check-inline">
+                <input class="form-check-input"  name="gejala<?=$g->kode_gejala?>" value="<?=$g->kode_gejala?>" type="checkbox" id="<?=$g->kode_gejala?>">
+                <label class="form-check-label" for="<?=$g->kode_gejala?>">
+                  <?=$g->nama_gejala?>
+                </label>
+              </div> 
+            </div>
+          <?php endforeach; ?>
 
-          </div>
-          
-          <div class="table-responsive">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Penyakit</th>
-                  <th>Bar Skor</th>
-                  <th>Presentase Skor</th>
-                </tr>
-              </thead>
-              <tbody id="hasil_komplit">
 
-              </tbody>
-            </table>
-          </div>
+
         </div>
       </div>
-
-    </div>
-    <div class="col-xl-6 col-lg-6 col-sm-6  layout-spacing">
-      <div class="card">
-        <div class="card-header">
-         <svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#04009a;}.cls-2{fill:#77acf1;}</style></defs><g data-name="13. Computer" id="_13._Computer"><path class="cls-1" d="M28,3H26a1,1,0,0,0,0,2h2a1,1,0,0,1,1,1V20H3V6A1,1,0,0,1,4,5H6A1,1,0,0,0,6,3H4A3,3,0,0,0,1,6V24a3,3,0,0,0,3,3h7.88A4.53,4.53,0,0,1,10,29.83L9.7,30H8a1,1,0,0,0,0,2H24a1,1,0,0,0,0-2H22.3l-.25-.17A4.53,4.53,0,0,1,20.12,27H28a3,3,0,0,0,3-3V6A3,3,0,0,0,28,3ZM19.36,30H12.64a6.55,6.55,0,0,0,1.28-3h4.16A6.55,6.55,0,0,0,19.36,30ZM28,25H4a1,1,0,0,1-1-1V22H29v2A1,1,0,0,1,28,25Z"/><path class="cls-1" d="M16,16a8,8,0,1,1,8-8A8,8,0,0,1,16,16ZM16,2a6,6,0,1,0,6,6A6,6,0,0,0,16,2Z"/><path class="cls-2" d="M18,7H17V6a1,1,0,0,0-2,0V7H14a1,1,0,0,0,0,2h1v1a1,1,0,0,0,2,0V9h1a1,1,0,0,0,0-2Z"/></g></svg> Gejala
-       </div>
-       <div class="card-body">
+      <div class="card-footer">
         <div class="row">
-          <?php 
-          foreach($gejala as $g):
-           ?>
-           <div class="col-md-4">
-             <div class="form-check form-check-primary form-check-inline">
-              <input class="form-check-input"  name="gejala<?=$g->kode_gejala?>" value="<?=$g->kode_gejala?>" type="checkbox" id="<?=$g->kode_gejala?>">
-              <label class="form-check-label" for="<?=$g->kode_gejala?>">
-                <?=$g->nama_gejala?>
-              </label>
-            </div> 
+          <div class="col-6">
+            <a href="javascript:void(0);" class="btn btn-dark w-100">Cancel</a>
           </div>
-        <?php endforeach; ?>
-
-
-
-      </div>
-    </div>
-    <div class="card-footer">
-      <div class="row">
-        <div class="col-6">
-          <a href="javascript:void(0);" class="btn btn-dark w-100">Cancel</a>
-        </div>
-        <div class="col-6">
-          <button type="button" name="checking" id="checking" class="btn btn-secondary w-100">Checking</button>
+          <div class="col-6">
+            <button type="button" name="checking" id="checking" class="btn btn-secondary w-100">Checking</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 </div>
 </div>
@@ -148,20 +165,23 @@
     var alamat = $("#alamat").val();
     var no_hp = $("#no_hp").val();
     var tgl_lahir = $("#tgl_lahir").val();
-    if(nama || alamat || no_hp || tgl_lahir){
+    var nik = $("#nik_pasien").val();
+    var jk  = $('input[name="jk"]:checked').val();
+
+    if(nama || alamat || no_hp || tgl_lahir || nik){
       $("#hasil").empty()
       $("#hasil_komplit").empty()
       $("#tombol").empty()
       $.ajax({
         type:"POST",
         url: "<?=base_url('admin/Diagnosa/checking')?>",
-        data: {pilihan:pilihan,nama:nama,alamat:alamat,no_hp:no_hp,tgl_lahir:tgl_lahir},
+        data: {pilihan:pilihan,nama:nama,alamat:alamat,no_hp:no_hp,tgl_lahir:tgl_lahir,nik:nik,jk:jk},
         success:function(msg){
          var isi = JSON.parse(msg);
          console.log(isi.datah.tertinggi);
          $("#hasil").append(`<div class="alert alert-arrow-left alert-icon-left alert-light-primary alert-dismissible fade show mb-4" role="alert">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-          <strong>Informasi!</strong> Berdasarkan Perhitungan dapat disimpulkan bahwa diagnosa dari inputan pengguna adalah <b>${isi.datah.tertinggi.nama_penyakit} Dengan Skor ${isi.datah.tertinggi.skor} %</b>.
+          <strong>Informasi!</strong> Berdasarkan Perhitungan dapat disimpulkan bahwa diagnosa dari inputan pengguna adalah <b>${isi.datah.tertinggi.nama_penyakit} Dengan Skor ${isi.datah.tertinggi.skor} % </b>Dan Solusi dari kesimpulan tersebut adalah <b>${isi.datah.tertinggi.solusi}</b>.
           </div>`);
          for(var a=0;a<isi.datah.semua.length;a++){
           $("#hasil_komplit").append(` <tr>

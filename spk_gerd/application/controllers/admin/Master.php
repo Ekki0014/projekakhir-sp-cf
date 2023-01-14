@@ -152,7 +152,9 @@ class Master extends CI_Controller {
 			'tgl_lahir'		=> $this->input->post('tgl_lahir'),
 			'no_hp'			=> $this->input->post('no_hp'),
 			'akses'			=> $this->input->post('akses'),
-			'username'	    => $this->input->post('username')	
+			'username'	    => $this->input->post('username'),
+			'nik'		    => $this->input->post('nik'),
+			'jenis_kelamin'	=> $this->input->post('jk')	
 		];
 		if($metode == 'tambah'){
 			$cek = $this->db->from('tpengguna')->order_by('kdpengguna','DESC')->limit(1)->get();
@@ -189,12 +191,18 @@ class Master extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	public function delete_pengguna($kdpengguna){
-		if($this->mv->delete_data('tpengguna', ['kdpengguna' => rawurldecode($kdpengguna)])){
-			echo json_encode(['status' => TRUE,'pesan' => 'DATA BERHASIL DIHAPUS']);
-		}else{
-			echo json_encode(['status' => FALSE,'pesan' => 'DATA GAGAL DIHAPUS']);
-		}
+	public function delete_pengguna($kdpengguna,$status){
+		$stat = rawurldecode($status) == 'aktif' ? 'tidak_aktif' : 'aktif';
+		$up = [
+			'status'		=> $stat
+		];
+		$this->mv->save_edit('tpengguna', ['kdpengguna' => rawurldecode($kdpengguna)],$up);
+		echo json_encode(['status' => TRUE,'pesan' => 'STATUS BERHASIL DIUBAH','status' => $status,'stat' => $stat]);	
+		// if($this->mv->delete_data('tpengguna', ['kdpengguna' => rawurldecode($kdpengguna)])){
+		// 	echo json_encode(['status' => TRUE,'pesan' => 'DATA BERHASIL DIHAPUS']);
+		// }else{
+		// 	echo json_encode(['status' => FALSE,'pesan' => 'DATA GAGAL DIHAPUS']);
+		// }
 	}
 
 }

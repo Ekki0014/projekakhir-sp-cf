@@ -119,6 +119,15 @@
                               <?php endforeach; ?>
                             </select>
                           </div>
+                           <div class="col-md-12 p-2">
+                            <label for="solusi" class="form-label">Solusi</label>
+                            <select id="solusi" name="solusi" class="form-control">
+                              <option value="">Pilih Solusi</option>
+                              <?php foreach($solusi->result() as $g): ?>
+                                <option value="<?=$g->kode_solusi?>" ><?=$g->solusi?></option>
+                              <?php endforeach; ?>
+                            </select>
+                          </div>
                         </div>
                         <button type="button" id="tambah" onclick="tambah_gejala()" class="btn btn-info mb-2 mr-2">
                          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 484.8 484.8" style="enable-background:new 0 0 484.8 484.8;" xml:space="preserve">
@@ -286,14 +295,22 @@
                   <tr>
                     <th>Kode Penyakit</th>
                     <th>Nama Penyakit</th>
+                    <th>Solusi</th>
                     <th class="no-content">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach($setting->result() as $s): ?>
+                  <?php foreach($setting->result() as $s):
+                    $solusi = "";
+                    if($s->kode_solusi != NULL || $s->kode_solusi != ""){
+                      $sol = $this->db->get_where('tsolusi',['kode_solusi' => $s->kode_solusi])->row();
+                      $solusi = $sol->solusi;
+                    }
+                   ?>
                     <tr>
                       <td><?=$s->kode_penyakit?></td>
                       <td><?=$s->nama_penyakit?></td>
+                      <td><?=$solusi?></td>
                       <td>
                         <button type="button" class="btn btn-warning btn-icon mb-2 me-4" onclick="gejala(`<?=$s->kode_setting?>`,`<?=$s->nama_penyakit?>`)" data-bs-toggle="modal" data-bs-target="#rotateleftModal">
                           <svg width="48px" height="48px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><title>Free Medical icons</title><path d="M40,47.5H8a3,3,0,0,1-3-3V4.5a3,3,0,0,1,3-3H40a3,3,0,0,1,3,3v40A3,3,0,0,1,40,47.5Zm-31-4H39V5.5H9v38Z" fill="#2161ff"/><rect x="22" y="10" width="4" height="10" transform="translate(9 39) rotate(-90)" fill="#a6c7ff"/><rect x="22" y="10" width="4" height="10" transform="translate(48 30) rotate(-180)" fill="#a6c7ff"/><path d="M30,29.5H18a2,2,0,0,1,0-4H30A2,2,0,0,1,30,29.5Z" fill="#a6c7ff"/><path d="M30,38.5H18a2,2,0,0,1,0-4H30A2,2,0,0,1,30,38.5Z" fill="#a6c7ff"/><rect width="48" height="48" fill="none"/></svg>
@@ -481,6 +498,7 @@
 
     $('#penyakit').select2();
     $("#gejala").select2();
+    $("#solusi").select2();
     var metode = "tambah";
     function edit(kode_setting){
       metode ="edit";
@@ -493,6 +511,7 @@
         dataType:"JSON",
         success: function(data){
          $("#penyakit").val(data.kode_penyakit).trigger('change');
+         $("#solusi").val(data.kode_solusi).trigger('change');
          $("#kode_setting").val(data.kode_setting);
          $("#data_gejala").load(`<?=base_url('admin/Diagnosa/load_cart')?>`);
        },error: function(jqXHR, textStatus, errorThrow){
@@ -516,6 +535,7 @@
    $("#form_setting")[0].reset();
    $("#penyakit").val("").trigger('change');
    $("#gejala").val("").trigger('change');
+   $("#solusi").val("").trigger('change');
    $.ajax({
     url:"<?=base_url('admin/Diagnosa/reset_cart')?>/",
     type:"GET",

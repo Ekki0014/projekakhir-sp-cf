@@ -68,8 +68,8 @@
 
 	table.tbl td {
 		padding: 5px;
-	}*/
-</style>
+		}*/
+	</style>
 </head>
 
 <body>
@@ -94,15 +94,22 @@
 								<td colspan="2" align="center"><span style="font-size: 30px;font-weight: bold;">Laporan Hasil Konsultasi Pasien RSUD Kabupaten Batang</span></td>
 							</tr>
 							<tr>
-								<td colspan="2" align="center">Jalan Dr. Sutomo No. 42, Batang</td>
+								<td colspan="2" align="center">Jl. Dr.Sutomo No.42, Kadilangu, Kauman, Kec. Batang, Kabupaten Batang, Jawa Tengah 51216</td>
 							</tr>
-							<!-- <tr>
-								<td colspan="2" align="center">082322744798</td>
-							</tr> -->
+							<tr>
+								<td colspan="2" align="center">(0285) 4493033</td>
+							</tr>
 						</table>
 						<hr>
 						<div align="center">
-							<b>PERIODE : <?= tgl_indo($tgl_awal) ?> S/D <?= tgl_indo($tgl_akhir) ?> </b><br>
+							<?php 
+							if($tgl_awal != "kosong"){
+								?>
+								<b>PERIODE : <?= $tgl_awal ?> S/D <?= $tgl_akhir ?> </b>
+								<?php 
+							}
+							?>
+							<br>
 							<!-- 	 -->
 						</div>
 						<br>
@@ -110,42 +117,62 @@
 							<thead>
 								<tr>
 									<th>No</th>
-									<th>Nama Pasien</th>
-									<!-- <th>PELANGGAN</th> -->
+									<th>Tanggal Konsul</th>
+									<th>NIK</th>
+									<th>Nama Lengkap</th>
+									<th>Usia</th>
+									<th>Jenis Kelamin</th>
 									<th>Tanggal Lahir</th>
 									<th>Alamat</th>
 									<th>No Hp</th>
 									<th>Hasil Penyakit</th>
+									<th>Solusi Penyakit</th>
+									
 								</tr>
 							</thead>
 							<tbody>
 								<?php $no=1; foreach($lap as $l): ?>
 								<tr>
 									<td align="center"><?=$no++?></td>
+									<td align="center"><?=tgl_indo($l->tgl_input)?></td>
+									<td align="center"><?=$l->nik?></td>
 									<td align="center"><?=$l->nama_pasien?></td>
-									<td align="center"><?=$l->tgl_lahir?></td>
+									<td align="center"><?=$l->usia?></td>
+									<td align="center"><?=$l->jenis_kelamin?></td>
+									<td align="center"><?=tgl_indo($l->tgl_lahir)?></td>
 									<td align="center"><?=$l->alamat?></td>
 									<td align="center"><?=$l->no_hp?></td>
 									<td align="center"><?=$l->penyakit?></td>
+									<td align="center"><?=$l->solusi?></td>
 								</tr>
 							<?php endforeach; ?>
-							</tbody>
-							
-						</table>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-		<tfoot>
-			<tr>
-				<td>
-					<!--place holder for the fixed-position footer-->
-					<div class="page-footer-space"></div>
-				</td>
-			</tr>
-		</tfoot>
+						</tbody>
 
-	</table>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td>
+				<!--place holder for the fixed-position footer-->
+				<div class="page-footer-space">Batang,<?=tgl_indo(date('Y-m-d'))?></div><br>
+				Mengetahui, Tenaga Medis 
+				
+			</td>
+		</tr>
+		<?php for($i=1;$i<=10;$i++): ?>
+			<tr>
+				<td></td>
+			</tr>
+		<?php endfor; ?>
+		<tr>
+			<td>Admin</td>
+		</tr>
+	</tfoot>
+
+</table>
 </body>
 
 </html>

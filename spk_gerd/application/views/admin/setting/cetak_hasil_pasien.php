@@ -121,7 +121,7 @@
                         </table>
                         <br>
 
-                        <table width="100%" cellpadding="0" cellspacing="4" border="0">
+                        <table width="100%" cellpadding="0" cellspacing="1" border="0">
                          <tr>
 
                             <td>Kode Konsultasi</td>
@@ -136,8 +136,26 @@
                         </tr>
                         <tr>
 
+                            <td width="40%">NIK Pasien</td>
+                            <td>: <?=$konsul->nik?></td>
+                            <!--   <td><?=$data->nama_jenazah?></td> -->
+                        </tr> 
+                        <tr>
+
                             <td width="40%">Nama Pasien</td>
                             <td>: <?=$konsul->nama_pasien?></td>
+                            <!--   <td><?=$data->nama_jenazah?></td> -->
+                        </tr>
+                          <tr>
+
+                            <td width="40%">Jenis Kelamin</td>
+                            <td>: <?=$konsul->jenis_kelamin?></td>
+                            <!--   <td><?=$data->nama_jenazah?></td> -->
+                        </tr>
+                          <tr>
+
+                            <td width="40%">Usia</td>
+                            <td>: <?=$konsul->usia?> Tahun</td>
                             <!--   <td><?=$data->nama_jenazah?></td> -->
                         </tr>
                         <tr>
@@ -217,7 +235,15 @@
              </td>
          </tr>
          <tr>
-            <td colspan="3"> Berdasarkan hasil tersebut disimpulkan bahwa diagnosa dari gejala yang dialami sdr. <b><?=$konsul->nama_pasien?></b> adalah <b><?=$peny->nama_penyakit?></b> dengan skor <b><?=$peny->skor_perhitungan?></b></td>
+            <?php 
+                $cekt = $this->db->get_where('tsetting_h',['kode_penyakit' => $peny->kode_penyakit])->row();
+                $solusi ="";
+                if($cekt->kode_solusi != "" || $cekt->kode_solusi != NULL){
+                    $sol = $this->db->get_where('tsolusi',['kode_solusi' => $cekt->kode_solusi])->row();
+                    $solusi= $sol->solusi;
+                }
+             ?>
+            <td colspan="3"> Berdasarkan hasil tersebut disimpulkan bahwa diagnosa dari gejala yang dialami sdr. <b><?=$konsul->nama_pasien?></b> adalah <b><?=$peny->nama_penyakit?></b> dengan skor <b><?=$peny->skor_perhitungan?></b> dan Solusi dari kesimpulan tersebut adalah <b><?=$solusi?></b></td>
         </tr>
 
         <br>
@@ -230,8 +256,18 @@
     <tr>
         <td>
             <!--place holder for the fixed-position footer-->
-            <div class="page-footer-space"></div>
+            <div class="page-footer-space">Batang,<?=tgl_indo(date('Y-m-d'))?></div><br>
+             Mengetahui, Tenaga Medis 
+           
         </td>
+    </tr>
+    <?php for($i=1;$i<=10;$i++): ?>
+    <tr>
+        <td></td>
+    </tr>
+<?php endfor; ?>
+    <tr>
+        <td>Admin</td>
     </tr>
 </tfoot>
 </table>

@@ -33,13 +33,33 @@ class Konsultasi extends CI_Controller {
 		}else{
 			$kodene="SOLH-0001";	
 		}
+
+
+		$tanggal_lahir = date('Y-m-d', strtotime($this->input->post('tgl_lahir')));
+
+		$birthDate 	= new \DateTime($tanggal_lahir);
+		//$hari_input = date('Y-m-d', strtotime($this->input->post('tgl_lahir'));
+		$today = new \DateTime("today");
+		if ($birthDate > $today) {
+		    $usia =  0;
+		}
+		$y = $today->diff($birthDate)->y;
+		// dd($y);
+		$m = $today->diff($birthDate)->m;
+		$d = $today->diff($birthDate)->d;
+		$usia =  $y;
+
+
 		$send = [
 			'kd_konsultasi'	=> $kodene,
+			'nik'			=> $this->input->post('nik'),
 			'nama_pasien'   => $this->input->post('nama'),
 			'alamat'		=> $this->input->post('alamat'),
 			'tgl_lahir'	    => $this->input->post('tgl_lahir'),
 			'no_hp'			=> $this->input->post('no_hp'),
-			'tgl_input' 	=> date("Y-m-d")
+			'tgl_input' 	=> date("Y-m-d"),
+			'usia'			=> $usia,
+			'jenis_kelamin'	=> $this->input->post('jk')
 		];
 
 		if($this->mv->save_data('tkonsultasi_h', $send)){
@@ -113,6 +133,9 @@ class Konsultasi extends CI_Controller {
 		endforeach;
 		$keys = array_column($wadah, 'skor');
 		array_multisort($keys, SORT_DESC, $wadah);
+		$kd_peny = $wadah[0]->kode_penyakit;
+		$cek_sol = $this->db->query("SELECT tsolusi.kode_solusi,tsolusi.solusi FROM tsetting_h,tsolusi WHERE tsetting_h.kode_solusi = tsolusi.kode_solusi AND tsetting_h.kode_penyakit='".$kd_peny."'")->row();
+		$wadah[0]->solusi = $cek_sol->solusi;
 		$datah = [
 			'tertinggi'	=> $wadah[0],
 			'wadah'      => $wadah,
@@ -147,6 +170,9 @@ class Konsultasi extends CI_Controller {
 			$keys = array_column($pen, 'skor');
 			array_multisort($keys, SORT_DESC, $pen);
 			$p->penyakit = $pen[0]->nama_penyakit."(".$pen[0]->skor_perhitungan." %)";
+			$kd_peny = $pen[0]->kode_penyakit;
+			$cek_sol = $this->db->query("SELECT tsolusi.kode_solusi,tsolusi.solusi FROM tsetting_h,tsolusi WHERE tsetting_h.kode_solusi = tsolusi.kode_solusi AND tsetting_h.kode_penyakit='".$kd_peny."'")->row();
+		$p->solusi = $cek_sol->solusi;
 			array_push($tampung,$p);
 		endforeach;
 		$data['tamp'] = $tampung;

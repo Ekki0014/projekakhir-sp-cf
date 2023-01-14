@@ -13,6 +13,7 @@ class Diagnosa extends CI_Controller {
 		$send = [
 			'penyakit' => $this->mv->get_data('tpenyakit'),
 			'gejala'   => $this->mv->get_data('tgejala'),
+			'solusi'	=> $this->mv->get_data('tsolusi'),
 			'setting'  => $this->db->select('*')->from('tsetting_h')->join('tpenyakit','tsetting_h.kode_penyakit = tpenyakit.kode_penyakit')->get(),
 		];
 		$this->template->load('data/template', 'admin/setting/diagnosa',$send);
@@ -63,7 +64,8 @@ class Diagnosa extends CI_Controller {
 		if($metode == "tambah"){
 			$kode = $this->mv->get_data('tsetting_h')->num_rows();
 			$send = [
-				'kode_penyakit'	=> $this->input->post('penyakit')
+				'kode_penyakit'	=> $this->input->post('penyakit'),
+				'kode_solusi'	=> $this->input->post('solusi')
 			];
 			if($kode > 0){
 				$send['kode_setting'] = sprintf("SET-%04s",++$kode);
@@ -89,7 +91,8 @@ class Diagnosa extends CI_Controller {
 			echo json_encode(['status' => TRUE,'pesan' => "DATA BERHASIL DISIMPAN",'metode' => $metode]);		
 		}else{
 			$send = [
-				'kode_penyakit'  => $this->input->post('penyakit')
+				'kode_penyakit'  => $this->input->post('penyakit'),
+				'kode_solusi'	 => $this->input->post('solusi')
 			];
 
 			$this->mv->save_edit('tsetting_h', ['kode_setting' => $this->input->post('kode_setting')],$send);
@@ -208,13 +211,31 @@ class Diagnosa extends CI_Controller {
 		}else{
 			$kodene="SOLH-0001";	
 		}
+
+		$tanggal_lahir = date('Y-m-d', strtotime($this->input->post('tgl_lahir')));
+
+		$birthDate 	= new \DateTime($tanggal_lahir);
+		//$hari_input = date('Y-m-d', strtotime($this->input->post('tgl_lahir'));
+		$today = new \DateTime("today");
+		if ($birthDate > $today) {
+		    $usia =  0;
+		}
+		$y = $today->diff($birthDate)->y;
+		// dd($y);
+		$m = $today->diff($birthDate)->m;
+		$d = $today->diff($birthDate)->d;
+		$usia =  $y;
+
 		$send = [
 			'kd_konsultasi'	=> $kodene,
+			'nik'			=> $this->input->post('nik'),
 			'nama_pasien'   => $this->input->post('nama'),
 			'alamat'		=> $this->input->post('alamat'),
 			'tgl_lahir'	    => $this->input->post('tgl_lahir'),
 			'no_hp'			=> $this->input->post('no_hp'),
-			'tgl_input' 	=> date("Y-m-d")
+			'tgl_input' 	=> date("Y-m-d"),
+			'usia'			=> $usia,
+			'jenis_kelamin'	=> $this->input->post('jk')
 		];
 
 		if($this->mv->save_data('tkonsultasi_h', $send)){
@@ -288,8 +309,13 @@ class Diagnosa extends CI_Controller {
 		endforeach;
 		$keys = array_column($wadah, 'skor');
 		array_multisort($keys, SORT_DESC, $wadah);
+		$kd_peny = $wadah[0]->kode_penyakit;
+		$cek_sol = $this->db->query("SELECT tsolusi.kode_solusi,tsolusi.solusi FROM tsetting_h,tsolusi WHERE tsetting_h.kode_solusi = tsolusi.kode_solusi AND tsetting_h.kode_penyakit='".$kd_peny."'")->row();
+		// $this->db->select('*')->from('tsetting_h')->join('tsolusi','tsolusi.kode_solusi = tsetting_h.kode_solusi')->where('tsetting_h',['tsetting_h.kode_penyakit' => "P01"])->get()->row();
+		 $wadah[0]->solusi = $cek_sol->solusi;
 		$datah = [
 			'tertinggi'	=> $wadah[0],
+			
 			'wadah'      => $wadah,
 			'semua'		=> $wadah,
 		];
